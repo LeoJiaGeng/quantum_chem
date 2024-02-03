@@ -5,7 +5,6 @@ import plotly.graph_objects as go
 import time
 from enum import Enum  ##枚举类型
 from config_adapt import Config_Adapt
-import markdown
  
 class CatType(Enum):    ##各单元格的类型
    XIAOKE=0

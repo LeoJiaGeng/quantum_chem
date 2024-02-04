@@ -5,7 +5,8 @@ import plotly.graph_objects as go
 import time
 from enum import Enum  ##枚举类型
 from config_adapt import Config_Adapt
- 
+from PIL import Image
+
 class CatType(Enum):    ##各单元格的类型
    XIAOKE=0
    PIKAQIU=1
@@ -27,68 +28,68 @@ class CatWebsite(object):
 
         # 设置首页信息
         st.title('记录Leo的小猫们:sunglasses:')
-        tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue = st.tabs(['日志', '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶'])
+        tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue = st.tabs(
+            ['日志', '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶'])
 
         # 设置侧边栏
         with st.sidebar:
             st.title('欢迎来我的小猫舍')
-            st.markdown('---')
-            st.markdown('这是它们的名字：\n- 小可\n- 皮卡丘\n- 生椰\n- 拿铁\n- 奶茶\n- 雪顶')
-            
+            # 打开Markdown文件
+            self.show_md('mdfiles/自我介绍.md')
+
+        # 设置主页面    
         with tab_log:
             st.header('欢迎来到我的小猫世界')
-            # 打开Markdown文件
-            with open(file= 'mdfiles/猫猫.md', mode='r', encoding= "utf-8") as file:
-                # 将内容转换为HTML格式
-                content = file.read()
-                st.markdown(content)
-            option = st.sidebar.selectbox(
-                '给你喜欢的猫咪投票！！！',
-                ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶'])
+            col1, col2, col3 = st.columns(3)
+            col1.image(Image.open('./photo/xiaoke.png'), caption='小可')
+            col2.image(Image.open('./photo/pikaqiu.png'), caption='皮卡丘')
+            col3.image(Image.open('./photo/xueding.png'), caption='雪顶')
+
+            col4, col5, col6 = st.columns(3)
+            col4.image(Image.open('./photo/naicha.png'), caption='奶茶')
+            col5.image(Image.open('./photo/natie.png'), caption='拿铁')
+            col6.image(Image.open('./photo/shengye.png'), caption='生椰')
 
             st.divider()
+            # 打开Markdown文件
+            self.show_md('mdfiles/猫猫.md')
+
+            # 显示地图
+            st.subheader("下面是我的小猫分布图")
+            self.show_map()
+
+            # 显示投票
+            option = st.selectbox(
+                '给你喜欢的猫咪投票！！！', self.cats_name)
+            st.divider()
             '你将投票给: ', option
-            if st.sidebar.button("投票", key=None):
-                st.write('投票成功！')
+            if st.button("投票", key=None):
+                st.success('投票成功！')
                 self.save_config(option)
 
         with tab_ke:
-            '''
-            python
-            from PIL import Image
-            image = Image.open('image.png')
-            '''
-            map_data = pandas.DataFrame(
-            numpy.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-            columns=['lat', 'lon'])
+            # st.image(Image.open('./photo/123.jpg'), caption='测试')
+            self.show_md('mdfiles/小可.md')
 
-            st.map(map_data)
+            # col1, col2, col3 = st.columns(3)
+            # col1.image(Image.open('./photo/xiaoke.png'), caption='小可')
+            # col2.image(Image.open('./photo/pikaqiu.png'), caption='皮卡丘')
+            # col3.image(Image.open('./photo/xueding.png'), caption='雪顶')
+# 
+            # col4, col5, col6 = st.columns(3)
+            # # agree = st.checkbox('I agree')
+            # col4.checkbox('小可')
+            # col5.checkbox('皮卡丘')
+            # col6.checkbox('雪顶')
+
+            # col1.metric("Temperature", "70 °F", "1.2 °F")
+            # col2.metric("Wind", "9 mph", "-8%")
+            # col3.metric("Humidity", "86%", "4%")
 
         with tab_pi:
             '''
-            ```python
-            import imageio
-            image = imageio.imread('image.png')
-            ```
+            皮卡丘去世了，我很难过！！！因为它我创建了这个网站，纪念它！！！
             '''
-            if st.checkbox('Show dataframe'):
-                chart_data = pandas.DataFrame(
-                numpy.random.randn(20, 3),
-                columns=['a', 'b', 'c'])
-
-                st.line_chart(chart_data)
-
-            latest_iteration = st.empty()
-
-            bar = st.progress(0)
-
-            for i in range(100):
-            # Update the progress bar with each iteration.
-                latest_iteration.text(f'Iteration {i+1}')
-                bar.progress(i + 1)
-                time.sleep(0.1)
-
-        '...and now we\'re done!'
 
         ## 默认渲染到主界面
         ## st.title('这是主界面')
@@ -97,11 +98,16 @@ class CatWebsite(object):
         #     'first column': [1, 2, 3, 4],
         #     'second column': [10, 20, 30, 40]
         #     }))
-
+        # st.image(Image.open('./photo/xiaoke.jpg'), caption='xiaoke')
+        # agree = st.checkbox('I agree')
+            # st.markdown('---\n 这是它们的名字：')
+            # st.markdown('\n- 小可\n- 皮卡丘\n- 生椰\n- 拿铁\n- 奶茶\n- 雪顶')
     # 初始化配置文件
     def init_config(self):
         self.config_obj = Config_Adapt("web_config.ini")
-        self.votes_list=[0,0,0,0,0,0]
+        self.votes_list = [0,0,0,0,0,0]
+        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶']
+        self.location_data = []
 
         self.votes_list[CatType.XIAOKE.value] = int(self.config_obj.get_config("votes", "xiaoke")["data"])
         self.votes_list[CatType.PIKAQIU.value] = int(self.config_obj.get_config("votes","pikaqiu")["data"])
@@ -144,7 +150,31 @@ class CatWebsite(object):
         )
         chart.update_layout(width=800, height=400)
         st.plotly_chart(chart)
-        
+
+    def to_int(self, value):
+        ret_list = []
+        for i in value:
+            ret_list.append(float(i))
+        return ret_list
+    
+    # 显示markdown文件，传入文件位置
+    def show_md(self, position):
+        with open(file= position, mode='r', encoding= "utf-8") as file:
+            # 将内容转换为HTML格式
+            content = file.read()
+            # print(content)
+            st.markdown(content)
+
+    # 显示地图，传入地图文件位置
+    def show_map(self, map_files="location.txt"):
+        with open(map_files, encoding="utf-8") as loc_obj:
+            for line in loc_obj.readlines():
+                self.location_data.append(self.to_int(list(line.strip().split(" "))[1:]))
+
+        map_data = pandas.DataFrame(self.location_data, columns=['lat', 'lon'])
+        # print(map_data)
+        st.map(map_data,color="#FF0000", use_container_width=True)
+
 if __name__ == '__main__':
     CatWebsite()
 

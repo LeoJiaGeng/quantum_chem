@@ -14,6 +14,9 @@ class CatType(Enum):    ##各单元格的类型
    NATIE=3
    NAICHA=4
    XUEDING=5
+   DANTA=6
+   YUANBAO=7
+   DUDU=8
 
 class CatWebsite(object):
     def __init__(self):
@@ -22,14 +25,19 @@ class CatWebsite(object):
         # 设置网页显示信息
         st.set_page_config(
             page_title='熊宝的小可',
-            page_icon=' ',
-            layout='wide'
+            page_icon="🧊",
+            layout="wide",
+            initial_sidebar_state="expanded",
+            menu_items={
+                'Get Help': 'https://www.extremelycoolapp.com/help',
+                'Report a bug': "https://www.extremelycoolapp.com/bug",
+                'About': "# This is a header. This is an *extremely* cool app!"}
         )
 
         # 设置首页信息
         st.title('记录Leo的小猫们:sunglasses:')
-        tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue = st.tabs(
-            ['日志', '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶'])
+        tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue, tab_dan, tab_bao, tab_du = st.tabs(
+            ["日志", '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋挞', '元宝', '嘟嘟'])
 
         # 设置侧边栏
         with st.sidebar:
@@ -50,6 +58,11 @@ class CatWebsite(object):
             col5.image(Image.open('./photo/natie.png'), caption='拿铁')
             col6.image(Image.open('./photo/shengye.png'), caption='生椰')
 
+            col7, col8, col9 = st.columns(3)
+            col7.image(Image.open('./photo/danta.png'), caption='蛋挞')
+            col8.image(Image.open('./photo/yuanbao.png'), caption='元宝')
+            col9.image(Image.open('./photo/dudu.png'), caption='嘟嘟')
+
             st.divider()
             # 打开Markdown文件
             self.show_md('mdfiles/猫猫.md')
@@ -64,6 +77,7 @@ class CatWebsite(object):
             st.divider()
             '你将投票给: ', option
             if st.button("投票", key=None):
+                st.balloons()
                 st.success('投票成功！')
                 self.save_config(option)
 
@@ -102,11 +116,11 @@ class CatWebsite(object):
         # agree = st.checkbox('I agree')
             # st.markdown('---\n 这是它们的名字：')
             # st.markdown('\n- 小可\n- 皮卡丘\n- 生椰\n- 拿铁\n- 奶茶\n- 雪顶')
-    # 初始化配置文件
-    def init_config(self):
+    
+    def init_config(self): # 初始化配置文件
         self.config_obj = Config_Adapt("web_config.ini")
-        self.votes_list = [0,0,0,0,0,0]
-        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶']
+        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋挞', '元宝', '嘟嘟']
+        self.votes_list = [0]*len(self.cats_name)
         self.location_data = []
 
         self.votes_list[CatType.XIAOKE.value] = int(self.config_obj.get_config("votes", "xiaoke")["data"])
@@ -115,6 +129,9 @@ class CatWebsite(object):
         self.votes_list[CatType.NATIE.value] = int(self.config_obj.get_config("votes", "natie")["data"])
         self.votes_list[CatType.NAICHA.value] = int(self.config_obj.get_config("votes", "naicha")["data"])
         self.votes_list[CatType.XUEDING.value] = int(self.config_obj.get_config("votes","xueding")["data"])
+        self.votes_list[CatType.DANTA.value] = int(self.config_obj.get_config("votes", "danta")["data"])
+        self.votes_list[CatType.YUANBAO.value] = int(self.config_obj.get_config("votes", "yuanbao")["data"])
+        self.votes_list[CatType.DUDU.value] = int(self.config_obj.get_config("votes","dudu")["data"])
 
     # 选取票数之后，进入增加票数
     def save_config(self, cat):
@@ -137,15 +154,24 @@ class CatWebsite(object):
         elif cat == "雪顶":
             self.votes_list[CatType.XUEDING.value] += 1
             self.config_obj.set_config("votes", "xueding", str(self.votes_list[CatType.XUEDING.value]))
+        elif cat == "蛋挞":
+            self.votes_list[CatType.DANTA.value] += 1
+            self.config_obj.set_config("votes", "danta", str(self.votes_list[CatType.NATIE.value]))
+        elif cat == "元宝":
+            self.votes_list[CatType.YUANBAO.value] += 1
+            self.config_obj.set_config("votes", "yuanbao", str(self.votes_list[CatType.NAICHA.value]))
+        elif cat == "嘟嘟":
+            self.votes_list[CatType.DUDU.value] += 1
+            self.config_obj.set_config("votes", "dudu", str(self.votes_list[CatType.XUEDING.value]))
         self.show_graph()
 
     # 显示统计数据图
     def show_graph(self):
         chart = go.Figure()
-        chart.add_trace(go.Bar(x=['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶'], y=self.votes_list))
+        chart.add_trace(go.Bar(x=self.cats_name, y=self.votes_list))
         chart.update_layout(
             title="猫咪的票数统计图",
-            xaxis=dict(title="猫咪的种类"),
+            xaxis=dict(title="猫咪的名字"),
             yaxis=dict(title="票数")
         )
         chart.update_layout(width=800, height=400)

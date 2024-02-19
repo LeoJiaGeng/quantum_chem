@@ -2,7 +2,6 @@ import streamlit as st
 import pandas
 import numpy
 import plotly.graph_objects as go
-import time
 from enum import Enum  ##枚举类型
 from config_adapt import Config_Adapt
 from PIL import Image
@@ -15,7 +14,7 @@ class CatType(Enum):    ##各单元格的类型
    NAICHA=4
    XUEDING=5
    danzai=6
-   YUANBAO=7
+   duoduo=7
    DUDU=8
 
 class CatWebsite(object):
@@ -37,7 +36,7 @@ class CatWebsite(object):
         # 设置首页信息
         st.title('记录Leo的小猫们:sunglasses:')
         tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue, tab_dan, tab_bao, tab_du = st.tabs(
-            ["日志", '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '元宝', '嘟嘟'])
+            ["日志", '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '哆哆', '嘟嘟'])
 
         # 设置侧边栏
         with st.sidebar:
@@ -60,7 +59,7 @@ class CatWebsite(object):
 
             col7, col8, col9 = st.columns(3)
             col7.image(Image.open('./photo/danzai.png'), caption='蛋仔')
-            col8.image(Image.open('./photo/yuanbao.png'), caption='元宝')
+            col8.image(Image.open('./photo/duoduo.png'), caption='哆哆')
             col9.image(Image.open('./photo/dudu.png'), caption='嘟嘟')
 
             st.divider()
@@ -82,27 +81,36 @@ class CatWebsite(object):
                 self.save_config(option)
 
         with tab_ke:
+            st.image(Image.open('./photo/xiaoke.png'), caption='小可')
             self.show_md('mdfiles/小可.md')
         with tab_pi:
+            st.image(Image.open('./photo/pikaqiu.png'), caption='皮卡丘')
             self.show_md('mdfiles/皮卡丘.md')
         with tab_ye:
+            st.image(Image.open('./photo/shengye.png'), caption='生椰')
             self.show_md('mdfiles/生椰.md')
         with tab_tie:
+            st.image(Image.open('./photo/natie.png'), caption='拿铁')
             self.show_md('mdfiles/拿铁.md')
         with tab_tea:
+            st.image(Image.open('./photo/naicha.png'), caption='奶茶')
             self.show_md('mdfiles/奶茶.md')
         with tab_xue:
+            st.image(Image.open('./photo/xueding.png'), caption='雪顶')
             self.show_md('mdfiles/雪顶.md')
         with tab_dan:
+            st.image(Image.open('./photo/danzai.png'), caption='蛋仔')
             self.show_md('mdfiles/蛋仔.md')
         with tab_bao:
-            self.show_md('mdfiles/元宝.md')
+            st.image(Image.open('./photo/duoduo.png'), caption='哆哆')
+            self.show_md('mdfiles/哆哆.md')
         with tab_du:
+            st.image(Image.open('./photo/dudu.png'), caption='嘟嘟')
             self.show_md('mdfiles/嘟嘟.md')
     
     def init_config(self): # 初始化配置文件
         self.config_obj = Config_Adapt("web_config.ini")
-        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '元宝', '嘟嘟']
+        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '哆哆', '嘟嘟']
         self.votes_list = [0]*len(self.cats_name)
         self.location_data = []
 
@@ -113,7 +121,7 @@ class CatWebsite(object):
         self.votes_list[CatType.NAICHA.value] = int(self.config_obj.get_config("votes", "naicha")["data"])
         self.votes_list[CatType.XUEDING.value] = int(self.config_obj.get_config("votes","xueding")["data"])
         self.votes_list[CatType.danzai.value] = int(self.config_obj.get_config("votes", "danzai")["data"])
-        self.votes_list[CatType.YUANBAO.value] = int(self.config_obj.get_config("votes", "yuanbao")["data"])
+        self.votes_list[CatType.duoduo.value] = int(self.config_obj.get_config("votes", "duoduo")["data"])
         self.votes_list[CatType.DUDU.value] = int(self.config_obj.get_config("votes","dudu")["data"])
 
     # 选取票数之后，进入增加票数
@@ -140,9 +148,9 @@ class CatWebsite(object):
         elif cat == "蛋仔":
             self.votes_list[CatType.danzai.value] += 1
             self.config_obj.set_config("votes", "danzai", str(self.votes_list[CatType.NATIE.value]))
-        elif cat == "元宝":
-            self.votes_list[CatType.YUANBAO.value] += 1
-            self.config_obj.set_config("votes", "yuanbao", str(self.votes_list[CatType.NAICHA.value]))
+        elif cat == "哆哆":
+            self.votes_list[CatType.duoduo.value] += 1
+            self.config_obj.set_config("votes", "duoduo", str(self.votes_list[CatType.NAICHA.value]))
         elif cat == "嘟嘟":
             self.votes_list[CatType.DUDU.value] += 1
             self.config_obj.set_config("votes", "dudu", str(self.votes_list[CatType.XUEDING.value]))

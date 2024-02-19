@@ -16,7 +16,7 @@ class Config_Adapt(Config):
         self.set_config("votes", "naicha", "6")
         self.set_config("votes", "xueding", "5")
         self.set_config("votes", "danzai", "4")
-        self.set_config("votes", "yuanbao", "3")
+        self.set_config("votes", "duoduo", "3")
         self.set_config("votes", "dudu", "2")
 
 if __name__ == "__main__":

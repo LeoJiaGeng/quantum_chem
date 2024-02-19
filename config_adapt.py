@@ -15,7 +15,7 @@ class Config_Adapt(Config):
         self.set_config("votes", "natie", "7")
         self.set_config("votes", "naicha", "6")
         self.set_config("votes", "xueding", "5")
-        self.set_config("votes", "danta", "4")
+        self.set_config("votes", "danzai", "4")
         self.set_config("votes", "yuanbao", "3")
         self.set_config("votes", "dudu", "2")
 

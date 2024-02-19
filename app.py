@@ -14,7 +14,7 @@ class CatType(Enum):    ##各单元格的类型
    NATIE=3
    NAICHA=4
    XUEDING=5
-   DANTA=6
+   danzai=6
    YUANBAO=7
    DUDU=8
 
@@ -37,7 +37,7 @@ class CatWebsite(object):
         # 设置首页信息
         st.title('记录Leo的小猫们:sunglasses:')
         tab_log, tab_ke, tab_pi, tab_ye, tab_tie, tab_tea, tab_xue, tab_dan, tab_bao, tab_du = st.tabs(
-            ["日志", '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋挞', '元宝', '嘟嘟'])
+            ["日志", '小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '元宝', '嘟嘟'])
 
         # 设置侧边栏
         with st.sidebar:
@@ -59,7 +59,7 @@ class CatWebsite(object):
             col6.image(Image.open('./photo/shengye.png'), caption='生椰')
 
             col7, col8, col9 = st.columns(3)
-            col7.image(Image.open('./photo/danta.png'), caption='蛋挞')
+            col7.image(Image.open('./photo/danzai.png'), caption='蛋仔')
             col8.image(Image.open('./photo/yuanbao.png'), caption='元宝')
             col9.image(Image.open('./photo/dudu.png'), caption='嘟嘟')
 
@@ -82,44 +82,27 @@ class CatWebsite(object):
                 self.save_config(option)
 
         with tab_ke:
-            # st.image(Image.open('./photo/123.jpg'), caption='测试')
             self.show_md('mdfiles/小可.md')
-
-            # col1, col2, col3 = st.columns(3)
-            # col1.image(Image.open('./photo/xiaoke.png'), caption='小可')
-            # col2.image(Image.open('./photo/pikaqiu.png'), caption='皮卡丘')
-            # col3.image(Image.open('./photo/xueding.png'), caption='雪顶')
-# 
-            # col4, col5, col6 = st.columns(3)
-            # # agree = st.checkbox('I agree')
-            # col4.checkbox('小可')
-            # col5.checkbox('皮卡丘')
-            # col6.checkbox('雪顶')
-
-            # col1.metric("Temperature", "70 °F", "1.2 °F")
-            # col2.metric("Wind", "9 mph", "-8%")
-            # col3.metric("Humidity", "86%", "4%")
-
         with tab_pi:
-            '''
-            皮卡丘去世了，我很难过！！！因为它我创建了这个网站，纪念它！！！
-            '''
-
-        ## 默认渲染到主界面
-        ## st.title('这是主界面')
-        ## st.info('这是主界面内容')
-        # st.write(pandas.DataFrame({
-        #     'first column': [1, 2, 3, 4],
-        #     'second column': [10, 20, 30, 40]
-        #     }))
-        # st.image(Image.open('./photo/xiaoke.jpg'), caption='xiaoke')
-        # agree = st.checkbox('I agree')
-            # st.markdown('---\n 这是它们的名字：')
-            # st.markdown('\n- 小可\n- 皮卡丘\n- 生椰\n- 拿铁\n- 奶茶\n- 雪顶')
+            self.show_md('mdfiles/皮卡丘.md')
+        with tab_ye:
+            self.show_md('mdfiles/生椰.md')
+        with tab_tie:
+            self.show_md('mdfiles/拿铁.md')
+        with tab_tea:
+            self.show_md('mdfiles/奶茶.md')
+        with tab_xue:
+            self.show_md('mdfiles/雪顶.md')
+        with tab_dan:
+            self.show_md('mdfiles/蛋仔.md')
+        with tab_bao:
+            self.show_md('mdfiles/元宝.md')
+        with tab_du:
+            self.show_md('mdfiles/嘟嘟.md')
     
     def init_config(self): # 初始化配置文件
         self.config_obj = Config_Adapt("web_config.ini")
-        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋挞', '元宝', '嘟嘟']
+        self.cats_name = ['小可', '皮卡丘', '生椰', '拿铁', '奶茶', '雪顶', '蛋仔', '元宝', '嘟嘟']
         self.votes_list = [0]*len(self.cats_name)
         self.location_data = []
 
@@ -129,7 +112,7 @@ class CatWebsite(object):
         self.votes_list[CatType.NATIE.value] = int(self.config_obj.get_config("votes", "natie")["data"])
         self.votes_list[CatType.NAICHA.value] = int(self.config_obj.get_config("votes", "naicha")["data"])
         self.votes_list[CatType.XUEDING.value] = int(self.config_obj.get_config("votes","xueding")["data"])
-        self.votes_list[CatType.DANTA.value] = int(self.config_obj.get_config("votes", "danta")["data"])
+        self.votes_list[CatType.danzai.value] = int(self.config_obj.get_config("votes", "danzai")["data"])
         self.votes_list[CatType.YUANBAO.value] = int(self.config_obj.get_config("votes", "yuanbao")["data"])
         self.votes_list[CatType.DUDU.value] = int(self.config_obj.get_config("votes","dudu")["data"])
 
@@ -154,9 +137,9 @@ class CatWebsite(object):
         elif cat == "雪顶":
             self.votes_list[CatType.XUEDING.value] += 1
             self.config_obj.set_config("votes", "xueding", str(self.votes_list[CatType.XUEDING.value]))
-        elif cat == "蛋挞":
-            self.votes_list[CatType.DANTA.value] += 1
-            self.config_obj.set_config("votes", "danta", str(self.votes_list[CatType.NATIE.value]))
+        elif cat == "蛋仔":
+            self.votes_list[CatType.danzai.value] += 1
+            self.config_obj.set_config("votes", "danzai", str(self.votes_list[CatType.NATIE.value]))
         elif cat == "元宝":
             self.votes_list[CatType.YUANBAO.value] += 1
             self.config_obj.set_config("votes", "yuanbao", str(self.votes_list[CatType.NAICHA.value]))

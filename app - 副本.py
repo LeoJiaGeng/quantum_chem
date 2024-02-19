@@ -198,3 +198,32 @@ def generate_histogram(data):
 
 if __name__ == "__main__":
     main()
+
+
+        ## 默认渲染到主界面
+        ## st.title('这是主界面')
+        ## st.info('这是主界面内容')
+        # st.write(pandas.DataFrame({
+        #     'first column': [1, 2, 3, 4],
+        #     'second column': [10, 20, 30, 40]
+        #     }))
+        # st.image(Image.open('./photo/xiaoke.jpg'), caption='xiaoke')
+        # agree = st.checkbox('I agree')
+            # st.markdown('---\n 这是它们的名字：')
+            # st.markdown('\n- 小可\n- 皮卡丘\n- 生椰\n- 拿铁\n- 奶茶\n- 雪顶')
+    
+            # col1, col2, col3 = st.columns(3)
+            # col1.image(Image.open('./photo/xiaoke.png'), caption='小可')
+            # col2.image(Image.open('./photo/pikaqiu.png'), caption='皮卡丘')
+            # col3.image(Image.open('./photo/xueding.png'), caption='雪顶')
+# 
+            # col4, col5, col6 = st.columns(3)
+            # # agree = st.checkbox('I agree')
+            # col4.checkbox('小可')
+            # col5.checkbox('皮卡丘')
+            # col6.checkbox('雪顶')
+
+            # col1.metric("Temperature", "70 °F", "1.2 °F")
+            # col2.metric("Wind", "9 mph", "-8%")
+            # col3.metric("Humidity", "86%", "4%")
+            # st.image(Image.open('./photo/123.jpg'), caption='测试')
